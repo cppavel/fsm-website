@@ -1,0 +1,14 @@
+{
+  "name": "logic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "state.js",
+  "scripts": {
+    "test": "jest --coverage --silent=false"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
