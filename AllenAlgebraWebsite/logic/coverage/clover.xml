@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1706821880471" clover="3.2.0">
-  <project timestamp="1706821880471" name="All files">
+<coverage generated="1706822263241" clover="3.2.0">
+  <project timestamp="1706822263242" name="All files">
     <metrics statements="131" coveredstatements="131" conditionals="30" coveredconditionals="30" methods="33" coveredmethods="33" elements="194" coveredelements="194" complexity="0" loc="131" ncloc="131" packages="1" files="4" classes="4"/>
-    <file name="dict.js" path="C:\Users\pavel\Desktop\AllenAlgebraWebsite\logic\src\dict.js">
+    <file name="dict.js" path="C:\Users\pavel\Desktop\fsm-website\AllenAlgebraWebsite\logic\src\dict.js">
       <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="12" coveredmethods="12"/>
       <line num="3" count="389" type="stmt"/>
       <line num="7" count="425" type="stmt"/>
@@ -20,7 +20,7 @@
       <line num="46" count="40" type="stmt"/>
       <line num="50" count="11" type="stmt"/>
     </file>
-    <file name="fsm.js" path="C:\Users\pavel\Desktop\AllenAlgebraWebsite\logic\src\fsm.js">
+    <file name="fsm.js" path="C:\Users\pavel\Desktop\fsm-website\AllenAlgebraWebsite\logic\src\fsm.js">
       <metrics statements="96" coveredstatements="96" conditionals="24" coveredconditionals="24" methods="12" coveredmethods="12"/>
       <line num="1" count="8" type="stmt"/>
       <line num="2" count="8" type="stmt"/>
@@ -119,7 +119,7 @@
       <line num="259" count="1" type="stmt"/>
       <line num="263" count="8" type="stmt"/>
     </file>
-    <file name="set.js" path="C:\Users\pavel\Desktop\AllenAlgebraWebsite\logic\src\set.js">
+    <file name="set.js" path="C:\Users\pavel\Desktop\fsm-website\AllenAlgebraWebsite\logic\src\set.js">
       <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="7"/>
       <line num="1" count="9" type="stmt"/>
       <line num="5" count="98" type="stmt"/>
@@ -131,7 +131,7 @@
       <line num="29" count="22" type="stmt"/>
       <line num="33" count="9" type="stmt"/>
     </file>
-    <file name="state.js" path="C:\Users\pavel\Desktop\AllenAlgebraWebsite\logic\src\state.js">
+    <file name="state.js" path="C:\Users\pavel\Desktop\fsm-website\AllenAlgebraWebsite\logic\src\state.js">
       <metrics statements="11" coveredstatements="11" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="2"/>
       <line num="1" count="9" type="stmt"/>
       <line num="5" count="126" type="stmt"/>
