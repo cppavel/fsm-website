@@ -26,7 +26,9 @@ function FsmView(props) {
     return nodes.find((node) => node.data.label === label);
   };
 
-  const filterNodesByCurrentState = (nodes) => {
+  const filterNodesByCurrentState = (nodes, edges) => {
+    if (!currentState) return [];
+
     const relevantNodeIds = [currentState.id];
 
     edges.forEach((edge) => {
@@ -42,6 +44,8 @@ function FsmView(props) {
   };
 
   const filterEdgesByCurrentState = (edges) => {
+    if (!currentState) return [];
+
     return edges.filter(
       (edge) =>
         edge.source === currentState.id || edge.target === currentState.id
@@ -53,7 +57,7 @@ function FsmView(props) {
   };
 
   return (
-    <div style={{ height: "90vh" }}>
+    <div style={{ height: "100vh" }}>
       <label>
         <input
           type="checkbox"
@@ -62,7 +66,7 @@ function FsmView(props) {
         />
         Global view enabled
       </label>
-      {!isGlobalView && (
+      {currentState && !isGlobalView && (
         <div>
           <p>Current state: {currentState.id}</p>
           <p>Next states</p>
@@ -94,15 +98,17 @@ function FsmView(props) {
         </div>
       )}
       <hr />
-      <ReactFlow
-        nodes={isGlobalView ? nodes : filterNodesByCurrentState(nodes)}
-        onNodesChange={onNodesChange}
-        edges={isGlobalView ? edges : filterEdgesByCurrentState(edges)}
-        onEdgesChange={onEdgesChange}
-      >
-        <Background />
-        <Controls />
-      </ReactFlow>
+      {nodes && edges && (
+        <ReactFlow
+          nodes={isGlobalView ? nodes : filterNodesByCurrentState(nodes, edges)}
+          onNodesChange={onNodesChange}
+          edges={isGlobalView ? edges : filterEdgesByCurrentState(edges)}
+          onEdgesChange={onEdgesChange}
+        >
+          <Background />
+          <Controls />
+        </ReactFlow>
+      )}
     </div>
   );
 }

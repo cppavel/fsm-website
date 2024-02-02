@@ -23,9 +23,7 @@ const FsmExamples = () => {
 
   const superposedFsm = fsm1.superpose(fsm2);
   const reactFlowNodesAndEdges =
-    superposedFsm.generateNodesAndEdgesForReactFlow(0, 0, 250, 250);
-
-  console.log(reactFlowNodesAndEdges);
+    superposedFsm.generateNodesAndEdgesForReactFlow(0, 0, 400, 250);
 
   return (
     <FsmView
