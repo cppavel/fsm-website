@@ -261,15 +261,45 @@ class Fsm {
     return superposedFsm;
   }
 
-  generateNodesAndEdgesForReactFlow(startNodeX, startNodeY, stepX, stepY) {
+  topologicalSort() {
+    const visited = new DeepSet();
+    const stack = [];
+
+    const dfs = (currentStateLabel) => {
+      visited.add(currentStateLabel);
+
+      for (const nextState of this.statesByLabel
+        .get(currentStateLabel)
+        .transitions.values()) {
+        if (!visited.has(nextState.label)) {
+          dfs(nextState.label);
+        }
+      }
+
+      stack.push(currentStateLabel);
+    };
+
+    for (const stateLabel of this.statesByLabel.keys()) {
+      if (!visited.has(stateLabel)) {
+        dfs(stateLabel);
+      }
+    }
+
+    return stack.reverse().map((x) => `${x}`);
+  }
+
+  generateNodesAndEdgesForReactFlow(
+    startNodeX,
+    startNodeY,
+    stepX,
+    stepY,
+    nodesPerHorizontalLayer = 3
+  ) {
     const nodes = [];
     const edges = [];
 
     const queue = [this.startStateLabels.values()[0]];
     const visited = new DeepSet();
-    const layer = new DeepDict();
-
-    layer.set(`${this.startStateLabels.values()[0]}`, 0);
 
     while (queue.length > 0) {
       const currentStateLabel = queue.pop();
@@ -310,33 +340,21 @@ class Fsm {
         edges.push(edge);
 
         if (!visited.has(nextState.label)) {
-          layer.set(
-            `${nextState.label}`,
-            layer.get(`${currentStateLabel}`) + 1
-          );
           queue.push(nextState.label);
         }
       }
     }
 
-    const countOfNodesByLayer = new DeepDict();
+    const topologicalOrder = this.topologicalSort();
 
     for (const node of nodes) {
-      const nodeLayer = layer.get(node.id);
-
-      if (!countOfNodesByLayer.has(nodeLayer)) {
-        countOfNodesByLayer.set(nodeLayer, 0);
-      }
-
+      const order = topologicalOrder.indexOf(node.id);
+      const shiftX = Math.floor(order / nodesPerHorizontalLayer);
+      const shiftY = order % nodesPerHorizontalLayer;
       node.position = {
-        x: startNodeX + stepX * nodeLayer,
-        y: startNodeY + countOfNodesByLayer.get(nodeLayer) * stepY,
+        x: startNodeX + stepX * shiftX,
+        y: startNodeY + stepY * shiftY,
       };
-
-      countOfNodesByLayer.set(
-        nodeLayer,
-        countOfNodesByLayer.get(nodeLayer) + 1
-      );
     }
 
     return {
