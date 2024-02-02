@@ -1,8 +1,9 @@
 import Fsm from "../logic/src/fsm";
 import State from "../logic/src/state";
 import FsmView from "./FsmView";
+import SimulationResultsClassicAllen from "./SimulationResultsClassicAllen";
 
-const FsmExamples = () => {
+const FsmExampleClassicAllen = () => {
   const fsm1 = new Fsm();
   fsm1.addState(new State("u_a"));
   fsm1.addState(new State("li_a"));
@@ -26,11 +27,14 @@ const FsmExamples = () => {
     superposedFsm.generateNodesAndEdgesForReactFlow(0, 0, 400, 250);
 
   return (
-    <FsmView
-      nodes={reactFlowNodesAndEdges.nodes}
-      edges={reactFlowNodesAndEdges.edges}
-    />
+    <div>
+      <SimulationResultsClassicAllen fsm={superposedFsm} />
+      <FsmView
+        nodes={reactFlowNodesAndEdges.nodes}
+        edges={reactFlowNodesAndEdges.edges}
+      />
+    </div>
   );
 };
 
-export default FsmExamples;
+export default FsmExampleClassicAllen;

@@ -1,8 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
-import FsmView from "./components/FsmView";
-import FsmExamples from "./components/FsmExamples";
+import FsmExampleClassicAllen from "./components/FsmExampleClassicAllen";
 import FsmInput from "./components/FsmInput";
 
 const App = () => {
@@ -11,8 +10,10 @@ const App = () => {
       <div>
         <Routes>
           <Route path="/" exact element={<Home />} />
-          <Route path="/fsmview" element={<FsmView />} />
-          <Route path="/fsmexamples" element={<FsmExamples />} />
+          <Route
+            path="/fsmexample-allen"
+            element={<FsmExampleClassicAllen />}
+          />
           <Route path="/fsminput" element={<FsmInput />} />
         </Routes>
       </div>

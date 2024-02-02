@@ -288,6 +288,37 @@ class Fsm {
     return stack.reverse().map((x) => `${x}`);
   }
 
+  simulate() {
+    let currentStateLabel = this.startStateLabels.values()[0];
+
+    const symbols = [];
+    const states = [];
+
+    while (true) {
+      const currentState = this.statesByLabel.get(currentStateLabel);
+
+      if (this.finalStateLabels.has(currentStateLabel)) {
+        return { symbols: symbols, states: states };
+      }
+
+      const transitionProbabilities = currentState.probabilities;
+
+      let cumulativeProbability = 0;
+      const randomValue = Math.random();
+
+      for (const [symbol, probability] of transitionProbabilities.entries()) {
+        cumulativeProbability += probability;
+
+        if (randomValue < cumulativeProbability) {
+          states.push(currentStateLabel);
+          symbols.push(symbol);
+          currentStateLabel = currentState.transitions.get(symbol).label;
+          break;
+        }
+      }
+    }
+  }
+
   generateNodesAndEdgesForReactFlow(
     startNodeX,
     startNodeY,

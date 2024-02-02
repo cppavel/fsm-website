@@ -9,13 +9,10 @@ const NavigationMenu = () => {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/fsmview">Fsm view</Link>
+          <Link to="/fsmexample-allen">Fsm Example Classic Allen</Link>
         </li>
         <li>
-          <Link to="/fsmexamples">Fsm examples</Link>
-        </li>
-        <li>
-          <Link to="/fsminput">Fsm input</Link>
+          <Link to="/fsminput">Fsm Input</Link>
         </li>
       </ul>
     </nav>
