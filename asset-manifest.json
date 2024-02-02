@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/fsm-website/static/css/main.599562d6.css",
+    "main.js": "/fsm-website/static/js/main.5fd7a831.js",
+    "index.html": "/fsm-website/index.html",
+    "main.599562d6.css.map": "/fsm-website/static/css/main.599562d6.css.map",
+    "main.5fd7a831.js.map": "/fsm-website/static/js/main.5fd7a831.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.599562d6.css",
+    "static/js/main.5fd7a831.js"
+  ]
+}
