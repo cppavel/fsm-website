@@ -10,7 +10,7 @@ const App = () => {
     <Router>
       <div>
         <Routes>
-          <Route path="/" exact element={<Home />} />
+          <Route path="/fsm-website" exact element={<Home />} />
           <Route path="/fsmview" element={<FsmView />} />
           <Route path="/fsmexamples" element={<FsmExamples />} />
           <Route path="/fsminput" element={<FsmInput />} />
