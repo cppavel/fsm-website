@@ -7,10 +7,10 @@ import FsmInput from "./components/FsmInput";
 
 const App = () => {
   return (
-    <Router>
+    <Router basename="/fsm-website">
       <div>
         <Routes>
-          <Route path="/fsm-website" exact element={<Home />} />
+          <Route path="/" exact element={<Home />} />
           <Route path="/fsmview" element={<FsmView />} />
           <Route path="/fsmexamples" element={<FsmExamples />} />
           <Route path="/fsminput" element={<FsmInput />} />
