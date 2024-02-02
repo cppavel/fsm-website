@@ -7,27 +7,11 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 
-const initialNodes = [
-  {
-    id: "1",
-    data: { label: "Hello" },
-    position: { x: 0, y: 0 },
-    type: "input",
-  },
-  {
-    id: "2",
-    data: { label: "World" },
-    position: { x: 100, y: 100 },
-  },
-];
-
-const initialEdges = [
-  { id: "1-2", source: "1", target: "2", label: "to the", type: "step" },
-];
-
-function FsmView() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+function FsmView(props) {
+  const [isGlobalView, setIsGlobalView] = useState(true);
+  const [nodes, setNodes] = useState(props.nodes);
+  const [edges, setEdges] = useState(props.edges);
+  const [currentState, setCurrentState] = useState(props.nodes[0]);
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -38,12 +22,82 @@ function FsmView() {
     []
   );
 
+  const findNodeByLabel = (label) => {
+    return nodes.find((node) => node.data.label === label);
+  };
+
+  const filterNodesByCurrentState = (nodes) => {
+    const relevantNodeIds = [currentState.id];
+
+    edges.forEach((edge) => {
+      if (edge.source === currentState.id) {
+        relevantNodeIds.push(edge.target);
+      }
+      if (edge.target === currentState.id) {
+        relevantNodeIds.push(edge.source);
+      }
+    });
+
+    return relevantNodeIds.map((nodeId) => findNodeByLabel(nodeId));
+  };
+
+  const filterEdgesByCurrentState = (edges) => {
+    return edges.filter(
+      (edge) =>
+        edge.source === currentState.id || edge.target === currentState.id
+    );
+  };
+
+  const handleViewChange = (event) => {
+    setIsGlobalView(event.target.checked);
+  };
+
   return (
-    <div style={{ height: "100vh" }}>
+    <div style={{ height: "90vh" }}>
+      <label>
+        <input
+          type="checkbox"
+          checked={isGlobalView}
+          onChange={handleViewChange}
+        />
+        Global view enabled
+      </label>
+      {!isGlobalView && (
+        <div>
+          <p>Current state: {currentState.id}</p>
+          <p>Next states</p>
+          {edges
+            .filter((edge) => edge.source === currentState.id)
+            .map((edge) => {
+              return (
+                <button
+                  key={edge.target}
+                  onClick={() => setCurrentState(findNodeByLabel(edge.target))}
+                >
+                  {`${edge.target} (${edge.label})`}
+                </button>
+              );
+            })}
+          <p>Previous states</p>
+          {edges
+            .filter((edge) => edge.target === currentState.id)
+            .map((edge) => {
+              return (
+                <button
+                  key={edge.source}
+                  onClick={() => setCurrentState(findNodeByLabel(edge.source))}
+                >
+                  {`${edge.source} (${edge.label})`}
+                </button>
+              );
+            })}
+        </div>
+      )}
+      <hr />
       <ReactFlow
-        nodes={nodes}
+        nodes={isGlobalView ? nodes : filterNodesByCurrentState(nodes)}
         onNodesChange={onNodesChange}
-        edges={edges}
+        edges={isGlobalView ? edges : filterEdgesByCurrentState(edges)}
         onEdgesChange={onEdgesChange}
       >
         <Background />

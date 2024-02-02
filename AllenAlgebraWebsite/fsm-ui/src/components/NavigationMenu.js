@@ -11,6 +11,9 @@ const NavigationMenu = () => {
         <li>
           <Link to="/fsmview">Fsm view</Link>
         </li>
+        <li>
+          <Link to="/fsmexamples">Fsm examples</Link>
+        </li>
       </ul>
     </nav>
   );

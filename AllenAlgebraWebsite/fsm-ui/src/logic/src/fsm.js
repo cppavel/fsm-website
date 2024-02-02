@@ -1,3 +1,5 @@
+const reactFlow = require("reactflow");
+
 const State = require("./state.js");
 const DeepSet = require("./set.js");
 const DeepDict = require("./dict.js");
@@ -257,6 +259,90 @@ class Fsm {
     }
 
     return superposedFsm;
+  }
+
+  generateNodesAndEdgesForReactFlow(startNodeX, startNodeY, stepX, stepY) {
+    const nodes = [];
+    const edges = [];
+
+    const queue = [this.startStateLabels.values()[0]];
+    const visited = new DeepSet();
+    const layer = new DeepDict();
+
+    layer.set(`${this.startStateLabels.values()[0]}`, 0);
+
+    while (queue.length > 0) {
+      const currentStateLabel = queue.pop();
+      visited.add(currentStateLabel);
+      const currentState = this.statesByLabel.get(currentStateLabel);
+
+      const node = {
+        id: `${currentStateLabel}`,
+        data: {
+          label: `${currentStateLabel}`,
+        },
+        sourcePosition: "right",
+        targetPosition: "left",
+      };
+
+      if (this.finalStateLabels.has(currentStateLabel)) {
+        node.style = {
+          backgroundColor: "red",
+        };
+      } else if (this.startStateLabels.has(currentStateLabel)) {
+        node.style = {
+          backgroundColor: "green",
+        };
+      }
+
+      nodes.push(node);
+
+      for (const [symbol, nextState] of currentState.transitions.entries()) {
+        const edge = {
+          id: `${currentStateLabel}-${symbol}-${nextState.label}`,
+          source: `${currentStateLabel}`,
+          target: `${nextState.label}`,
+          label: `${symbol} P=${currentState.probabilities.get(symbol)}`,
+          markerEnd: {
+            type: reactFlow.MarkerType.ArrowClosed,
+          },
+        };
+        edges.push(edge);
+
+        if (!visited.has(nextState.label)) {
+          layer.set(
+            `${nextState.label}`,
+            layer.get(`${currentStateLabel}`) + 1
+          );
+          queue.push(nextState.label);
+        }
+      }
+    }
+
+    const countOfNodesByLayer = new DeepDict();
+
+    for (const node of nodes) {
+      const nodeLayer = layer.get(node.id);
+
+      if (!countOfNodesByLayer.has(nodeLayer)) {
+        countOfNodesByLayer.set(nodeLayer, 0);
+      }
+
+      node.position = {
+        x: startNodeX + stepX * nodeLayer,
+        y: startNodeY + countOfNodesByLayer.get(nodeLayer) * stepY,
+      };
+
+      countOfNodesByLayer.set(
+        nodeLayer,
+        countOfNodesByLayer.get(nodeLayer) + 1
+      );
+    }
+
+    return {
+      nodes: nodes,
+      edges: edges,
+    };
   }
 }
 
