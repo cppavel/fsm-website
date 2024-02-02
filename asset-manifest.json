@@ -1,13 +1,15 @@
 {
   "files": {
     "main.css": "/fsm-website/static/css/main.599562d6.css",
-    "main.js": "/fsm-website/static/js/main.5fd7a831.js",
+    "main.js": "/fsm-website/static/js/main.e12dd43e.js",
+    "static/js/592.215b6784.chunk.js": "/fsm-website/static/js/592.215b6784.chunk.js",
     "index.html": "/fsm-website/index.html",
     "main.599562d6.css.map": "/fsm-website/static/css/main.599562d6.css.map",
-    "main.5fd7a831.js.map": "/fsm-website/static/js/main.5fd7a831.js.map"
+    "main.e12dd43e.js.map": "/fsm-website/static/js/main.e12dd43e.js.map",
+    "592.215b6784.chunk.js.map": "/fsm-website/static/js/592.215b6784.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.599562d6.css",
-    "static/js/main.5fd7a831.js"
+    "static/js/main.e12dd43e.js"
   ]
 }
