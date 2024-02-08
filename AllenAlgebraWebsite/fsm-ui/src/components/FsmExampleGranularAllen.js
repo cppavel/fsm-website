@@ -1,7 +1,7 @@
 import Fsm from "../logic/src/fsm";
 import State from "../logic/src/state";
 import FsmView from "./FsmView";
-import SimulationResultsGranularAllen from "./SimulationResultsGranularAllen";
+import SimulationResults from "./SimulationResults";
 
 const FsmExampleGranularAllen = () => {
   const p_start = 0.25;
@@ -37,13 +37,31 @@ const FsmExampleGranularAllen = () => {
   const reactFlowNodesAndEdges =
     superposedFsm.generateNodesAndEdgesForReactFlow(0, 0, 400, 250, 7);
 
+  const depad = (path) => {
+    return path
+      .replace("_oa_", "_")
+      .replace("oa,", "")
+      .replace(",oa", "")
+      .replace("_ob_", "_")
+      .replace("ob,", "")
+      .replace(",ob", "");
+  };
+
   return (
-    <div>
-      <SimulationResultsGranularAllen fsm={superposedFsm} />
-      <FsmView
-        nodes={reactFlowNodesAndEdges.nodes}
-        edges={reactFlowNodesAndEdges.edges}
-      />
+    <div style={{ display: "flex", height: "100%" }}>
+      <div
+        style={{ flex: "1 1 20%", width: "20%", backgroundColor: "#f0f0f0" }}
+      >
+        <SimulationResults fsm={superposedFsm} depad={depad} />
+      </div>
+      <div
+        style={{ flex: "1 1 80%", width: "80%", backgroundColor: "#e0e0e0" }}
+      >
+        <FsmView
+          nodes={reactFlowNodesAndEdges.nodes}
+          edges={reactFlowNodesAndEdges.edges}
+        />
+      </div>
     </div>
   );
 };

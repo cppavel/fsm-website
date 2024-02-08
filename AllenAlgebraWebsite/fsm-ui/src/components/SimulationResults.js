@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import DeepDict from "../logic/src/dict";
 
-const SimulationResultsGranularAllen = ({ fsm }) => {
+const SimulationResults = ({ fsm, depad }) => {
   const [simulations, setSimulations] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [numberOfRuns, setNumberOfRuns] = useState(100);
 
   const allenMapping = {
     lb_rb_la_ra: "is preceded",
-    la_ra_lb_rb: "preceeds",
+    la_ra_lb_rb: "precedes",
     "lb_la,rb_ra": "meets inverse",
     "la_ra,lb_rb": "meets",
     lb_la_rb_ra: "overlaps inverse",
@@ -20,16 +20,6 @@ const SimulationResultsGranularAllen = ({ fsm }) => {
     "lb_la_ra,rb": "finishes",
     "la_lb_ra,rb": "finishes inverse",
     "la,lb_ra,rb": "equals",
-  };
-
-  const depad = (path) => {
-    return path
-      .replace("_oa_", "_")
-      .replace("oa,", "")
-      .replace(",oa", "")
-      .replace("_ob_", "_")
-      .replace("ob,", "")
-      .replace(",ob", "");
   };
 
   const simulateMany = () => {
@@ -68,11 +58,12 @@ const SimulationResultsGranularAllen = ({ fsm }) => {
       <button
         onClick={simulateMany}
         style={{
-          backgroundColor: "gray",
+          backgroundColor: "#4CAF50",
           color: "white",
           padding: "10px",
           borderRadius: "5px",
           border: "none",
+          marginRight: "10px",
         }}
       >
         Simulate Many
@@ -82,49 +73,85 @@ const SimulationResultsGranularAllen = ({ fsm }) => {
         type="number"
         value={numberOfRuns}
         onChange={handleNumberOfRunsChange}
-      ></input>
+        style={{
+          padding: "10px",
+          borderRadius: "5px",
+          border: "1px solid #ccc",
+          marginBottom: "10px",
+        }}
+      />
+
+      <button
+        onClick={() => setSimulations([])}
+        style={{
+          backgroundColor: "#FF3366",
+          color: "white",
+          padding: "10px",
+          borderRadius: "5px",
+          border: "none",
+          marginRight: "10px",
+          marginTop: "10px",
+        }}
+      >
+        Clear Results
+      </button>
+
+      <div>
+        <p>Allen probabilities:</p>
+        <table
+          style={{ borderCollapse: "collapse", border: "1px solid black" }}
+        >
+          <thead>
+            <tr>
+              <th style={{ padding: "8px", border: "1px solid black" }}>
+                Allen relation
+              </th>
+              <th style={{ padding: "8px", border: "1px solid black" }}>
+                Probability
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {findAllenRelationProbabilities()
+              .entries()
+              .sort()
+              .map(([allenName, probability]) => (
+                <tr key={allenName}>
+                  <td style={{ padding: "8px", border: "1px solid black" }}>
+                    {allenName}
+                  </td>
+                  <td style={{ padding: "8px", border: "1px solid black" }}>
+                    {probability.toFixed(3)}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
 
       <input
         type="checkbox"
         checked={showResults}
         onChange={() => setShowResults(!showResults)}
+        style={{ marginTop: "15px", marginRight: "10px" }}
       />
-      <label>Show Individual Run Results</label>
-      <div>
-        <p>Allen probabilities:</p>
-        {
-          <table
-            style={{ borderCollapse: "collapse", border: "1px solid black" }}
-          >
-            <tr>
-              <th>Allen relation</th>
-              <th>Probability</th>
-            </tr>
-            {findAllenRelationProbabilities()
-              .entries()
-              .sort()
-              .map(([allenName, probability]) => {
-                return (
-                  <tr>
-                    <td> {allenName}</td>
-                    <td>{probability.toFixed(3)}</td>
-                  </tr>
-                );
-              })}
-          </table>
-        }
-      </div>
+      <label style={{ marginBottom: "10px" }}>
+        Show Individual Run Results
+      </label>
+
       {showResults && (
-        <div>
+        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
           {simulations.map((simulation, index) => (
-            <div>
-              <p>Result: {index + 1}</p>
-              <p>String: {depad(simulation.symbols.join("_"))}</p>
-              <p>
+            <div key={index} style={{ marginBottom: "10px" }}>
+              <p style={{ marginBottom: "5px" }}>Result: {index + 1}</p>
+              <p style={{ marginBottom: "5px" }}>
+                String: {depad(simulation.symbols.join("_"))}
+              </p>
+              <p style={{ marginBottom: "5px" }}>
                 Allen relation:{" "}
                 {allenMapping[depad(simulation.symbols.join("_"))]}
               </p>
-              <hr />
+              <hr style={{ marginBottom: "5px" }} />
             </div>
           ))}
         </div>
@@ -133,4 +160,4 @@ const SimulationResultsGranularAllen = ({ fsm }) => {
   );
 };
 
-export default SimulationResultsGranularAllen;
+export default SimulationResults;
