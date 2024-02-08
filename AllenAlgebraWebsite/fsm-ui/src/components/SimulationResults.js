@@ -64,10 +64,12 @@ const SimulationResults = ({ fsm, depad }) => {
           borderRadius: "5px",
           border: "none",
           marginRight: "10px",
+          marginBottom: "10px",
         }}
       >
         Simulate Many
       </button>
+      <br />
 
       <input
         type="number"
@@ -78,8 +80,11 @@ const SimulationResults = ({ fsm, depad }) => {
           borderRadius: "5px",
           border: "1px solid #ccc",
           marginBottom: "10px",
+          marginTop: "10px",
         }}
       />
+
+      <br />
 
       <button
         onClick={() => setSimulations([])}

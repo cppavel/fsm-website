@@ -50,12 +50,12 @@ const FsmExampleGranularAllen = () => {
   return (
     <div style={{ display: "flex", height: "100%" }}>
       <div
-        style={{ flex: "1 1 25%", width: "25%", backgroundColor: "#f0f0f0" }}
+        style={{ flex: "1 1 20%", width: "20%", backgroundColor: "#f0f0f0" }}
       >
         <SimulationResults fsm={superposedFsm} depad={depad} />
       </div>
       <div
-        style={{ flex: "1 1 75%", width: "75%", backgroundColor: "#e0e0e0" }}
+        style={{ flex: "1 1 80%", width: "80%", backgroundColor: "#e0e0e0" }}
       >
         <FsmView
           nodes={reactFlowNodesAndEdges.nodes}
