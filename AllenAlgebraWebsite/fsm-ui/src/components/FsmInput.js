@@ -37,8 +37,6 @@ const FsmInput = () => {
       );
     });
 
-    console.log(transitions);
-
     if (startingState) {
       fsm.markAsStart(startingState);
     }
@@ -58,8 +56,6 @@ const FsmInput = () => {
       250,
       250
     );
-
-    console.log(fsm);
 
     setNodes(reactFlowNodesAndEdges.nodes);
     setEdges(reactFlowNodesAndEdges.edges);
@@ -94,15 +90,8 @@ const FsmInput = () => {
 
   const addTransition = (e) => {
     e.preventDefault();
-    let prob = 0.0;
+    let prob = Math.min(1.0, Math.max(0.0, parseFloat(formData.probability)));
 
-    if (formData.probability < 0) {
-      prob = 0.0;
-    } else if (formData.probability > 1) {
-      prob = 1.0;
-    } else {
-      prob = parseFloat(formData.probability);
-    }
     setTransitions([
       ...transitions,
       {
@@ -144,100 +133,236 @@ const FsmInput = () => {
   };
 
   return (
-    <div>
-      <h2>Finite State Automaton Editor</h2>
-      <form onSubmit={addState}>
-        <label>
-          Add State:
-          <input
-            type="text"
-            value={newStateName}
-            onChange={handleNewStateChange}
-          />
-          <button type="submit">Add State</button>
-        </label>
-      </form>
-      <form onSubmit={addTransition}>
-        <label>
-          Add Transition:
-          <input
-            type="text"
-            name="sourceState"
-            placeholder="Source State"
-            value={formData.sourceState}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            name="targetState"
-            placeholder="Target State"
-            value={formData.targetState}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            name="inputSymbol"
-            placeholder="Input Symbol"
-            value={formData.inputSymbol}
-            onChange={handleInputChange}
-          />
-          <input
-            type="number"
-            name="probability"
-            placeholder="Probability"
-            value={formData.probability}
-            onChange={handleInputChange}
-          />
-          <button type="submit">Add Transition</button>
-        </label>
-      </form>
-      <form onSubmit={markAsFinal}>
-        <label>
-          Mark State as Final:
-          <input
-            type="text"
-            name="finalState"
-            placeholder="State to mark as final"
-            value={formData.finalState}
-            onChange={handleInputChange}
-          />
-          <button type="submit">Mark as Final</button>
-        </label>
-      </form>
-      <form onSubmit={markAsStarting}>
-        <label>
-          Mark State as Starting:
-          <input
-            type="text"
-            name="startingStateInput"
-            placeholder="State to mark as starting"
-            value={formData.startingStateInput}
-            onChange={handleInputChange}
-          />
-          <button type="submit">Mark as Starting</button>
-        </label>
-      </form>
+    <div
+      style={{
+        display: "flex",
+        height: "100%",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <div
+        style={{
+          flex: "1 1 20%",
+          width: "20%",
+          backgroundColor: "#f2f2f2",
+          padding: "20px",
+        }}
+      >
+        <h2 style={{ marginBottom: "20px" }}>FSM Editor</h2>
+        <form onSubmit={addState} style={{ marginBottom: "20px" }}>
+          <label style={{ display: "block" }}>
+            Add State:
+            <br />
+            <input
+              type="text"
+              value={newStateName}
+              onChange={handleNewStateChange}
+              style={{
+                marginLeft: "10px",
+                padding: "5px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <br />
+            <button
+              type="submit"
+              style={{
+                marginTop: "10px",
+                marginLeft: "10px",
+                padding: "5px 10px",
+                borderRadius: "5px",
+                border: "1px solid #007bff",
+                backgroundColor: "#007bff",
+                color: "white",
+              }}
+            >
+              Add State
+            </button>
+          </label>
+        </form>
+        <form onSubmit={addTransition} style={{ marginBottom: "20px" }}>
+          <label style={{ display: "block" }}>
+            Add Transition:
+            <br />
+            <input
+              type="text"
+              name="sourceState"
+              placeholder="Source State"
+              value={formData.sourceState}
+              onChange={handleInputChange}
+              style={{
+                marginLeft: "10px",
+                padding: "5px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <input
+              type="text"
+              name="targetState"
+              placeholder="Target State"
+              value={formData.targetState}
+              onChange={handleInputChange}
+              style={{
+                marginLeft: "10px",
+                padding: "5px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <input
+              type="text"
+              name="inputSymbol"
+              placeholder="Input Symbol"
+              value={formData.inputSymbol}
+              onChange={handleInputChange}
+              style={{
+                marginLeft: "10px",
+                padding: "5px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <input
+              type="number"
+              name="probability"
+              placeholder="Probability"
+              value={formData.probability}
+              onChange={handleInputChange}
+              style={{
+                marginLeft: "10px",
+                padding: "5px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <br />
+            <button
+              type="submit"
+              style={{
+                marginTop: "10px",
+                marginLeft: "10px",
+                padding: "5px 10px",
+                borderRadius: "5px",
+                border: "1px solid #007bff",
+                backgroundColor: "#007bff",
+                color: "white",
+              }}
+            >
+              Add Transition
+            </button>
+          </label>
+        </form>
+        <form onSubmit={markAsFinal} style={{ marginBottom: "20px" }}>
+          <label style={{ display: "block" }}>
+            Mark State as Final:
+            <input
+              type="text"
+              name="finalState"
+              placeholder="State to mark as final"
+              value={formData.finalState}
+              onChange={handleInputChange}
+              style={{
+                marginLeft: "10px",
+                padding: "5px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <br />
+            <button
+              type="submit"
+              style={{
+                marginTop: "10px",
+                marginLeft: "10px",
+                padding: "5px 10px",
+                borderRadius: "5px",
+                border: "1px solid #007bff",
+                backgroundColor: "#007bff",
+                color: "white",
+              }}
+            >
+              Mark as Final
+            </button>
+          </label>
+        </form>
+        <form onSubmit={markAsStarting} style={{ marginBottom: "20px" }}>
+          <label style={{ display: "block" }}>
+            Mark State as Starting:
+            <input
+              type="text"
+              name="startingStateInput"
+              placeholder="State to mark as starting"
+              value={formData.startingStateInput}
+              onChange={handleInputChange}
+              style={{
+                marginLeft: "10px",
+                padding: "5px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <br />
+            <button
+              type="submit"
+              style={{
+                marginTop: "10px",
+                marginLeft: "10px",
+                padding: "5px 10px",
+                borderRadius: "5px",
+                border: "1px solid #007bff",
+                backgroundColor: "#007bff",
+                color: "white",
+              }}
+            >
+              Mark as Starting
+            </button>
+          </label>
+        </form>
 
-      <h3>States:</h3>
-      <ul>
-        {states.map((state) => (
-          <li key={state}>
-            {state} {startingState === state && "(Starting)"}{" "}
-            {finalStates.includes(state) && "(Final)"}
-          </li>
-        ))}
-      </ul>
+        <h3 style={{ marginBottom: "10px" }}>States:</h3>
+        <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
+          {states.map((state) => (
+            <li key={state} style={{ marginBottom: "5px", fontWeight: "bold" }}>
+              {state} {startingState === state && "(Starting)"}{" "}
+              {finalStates.includes(state) && "(Final)"}
+            </li>
+          ))}
+        </ul>
 
-      <h3>Transitions:</h3>
-      <ul>
-        {transitions.map((transition, index) => (
-          <li key={index}>
-            {`${transition.source}--(${transition.input})-->${transition.target} P=${transition.probability}`}
-          </li>
-        ))}
-      </ul>
-      <button onClick={createFsmOnClick}>Update FSM View</button>
-      <FsmView key={updateKey} nodes={nodes} edges={edges} />
+        <h3 style={{ marginBottom: "10px" }}>Transitions:</h3>
+        <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
+          {transitions.map((transition, index) => (
+            <li key={index} style={{ marginBottom: "5px" }}>
+              {`${transition.source}--(${transition.input})-->${transition.target} P=${transition.probability}`}
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={createFsmOnClick}
+          style={{
+            padding: "10px",
+            borderRadius: "5px",
+            border: "none",
+            backgroundColor: "#007bff",
+            color: "white",
+            cursor: "pointer",
+          }}
+        >
+          Update FSM View
+        </button>
+      </div>
+      <div
+        style={{
+          flex: "1 1 80%",
+          width: "80%",
+          backgroundColor: "#f2f2f2",
+          padding: "20px",
+        }}
+      >
+        <FsmView key={updateKey} nodes={nodes} edges={edges} />
+      </div>
     </div>
   );
 };

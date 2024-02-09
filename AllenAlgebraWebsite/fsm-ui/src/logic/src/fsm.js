@@ -363,7 +363,9 @@ class Fsm {
           id: `${currentStateLabel}-${symbol}-${nextState.label}`,
           source: `${currentStateLabel}`,
           target: `${nextState.label}`,
-          label: `${symbol} P=${currentState.probabilities.get(symbol)}`,
+          label: `${symbol} P=${currentState.probabilities
+            .get(symbol)
+            .toFixed(3)}`,
           markerEnd: {
             type: reactFlow.MarkerType.ArrowClosed,
           },
