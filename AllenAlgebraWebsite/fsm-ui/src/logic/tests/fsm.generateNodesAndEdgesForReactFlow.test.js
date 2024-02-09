@@ -69,7 +69,7 @@ describe("generateNodesAndEdgesForReactFlow", () => {
         id: "A-ab-B",
         source: "A",
         target: "B",
-        label: "ab P=0.6",
+        label: "ab P=0.600",
         markerEnd: {
           type: reactFlow.MarkerType.ArrowClosed,
         },
@@ -78,7 +78,7 @@ describe("generateNodesAndEdgesForReactFlow", () => {
         id: "A-ac-C",
         source: "A",
         target: "C",
-        label: "ac P=1",
+        label: "ac P=1.000",
         markerEnd: {
           type: reactFlow.MarkerType.ArrowClosed,
         },
@@ -87,7 +87,7 @@ describe("generateNodesAndEdgesForReactFlow", () => {
         id: "C-cd-D",
         source: "C",
         target: "D",
-        label: "cd P=1",
+        label: "cd P=1.000",
         markerEnd: {
           type: reactFlow.MarkerType.ArrowClosed,
         },
@@ -96,7 +96,7 @@ describe("generateNodesAndEdgesForReactFlow", () => {
         id: "B-bd-D",
         source: "B",
         target: "D",
-        label: "bd P=0.3",
+        label: "bd P=0.300",
         markerEnd: {
           type: reactFlow.MarkerType.ArrowClosed,
         },
