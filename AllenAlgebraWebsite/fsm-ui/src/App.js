@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import FsmExampleClassicAllen from "./components/FsmExampleClassicAllen";
 import FsmInput from "./components/FsmInput";
 import FsmExampleGranularAllen from "./components/FsmExampleGranularAllen";
+import FsmSuperpose from "./components/FsmSuperpose";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
             path="/fsmexample-granular"
             element={<FsmExampleGranularAllen />}
           />
+          <Route path="/fsm-superpose" element={<FsmSuperpose />} />
         </Routes>
       </div>
     </Router>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FsmView from "./FsmView";
 import Fsm from "../logic/src/fsm";
 import State from "../logic/src/state";
+import FsmSerializer from "../logic/src/fsmSerialize";
 
 const FsmInput = () => {
   const [states, setStates] = useState([]);
@@ -130,6 +131,20 @@ const FsmInput = () => {
       ...formData,
       startingStateInput: "",
     });
+  };
+
+  const downloadSerializedFsm = () => {
+    const fsm = createFsm();
+    const serializedFsm = FsmSerializer.serialize(fsm);
+    const blob = new Blob([serializedFsm], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "serialized_fsm.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -351,6 +366,20 @@ const FsmInput = () => {
           }}
         >
           Update FSM View
+        </button>
+        <button
+          onClick={downloadSerializedFsm}
+          style={{
+            marginTop: "10px",
+            marginLeft: "10px",
+            padding: "5px 10px",
+            borderRadius: "5px",
+            border: "1px solid #007bff",
+            backgroundColor: "#007bff",
+            color: "white",
+          }}
+        >
+          Download Serialized FSM
         </button>
       </div>
       <div

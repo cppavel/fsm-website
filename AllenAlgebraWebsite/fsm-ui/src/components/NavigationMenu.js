@@ -15,7 +15,10 @@ const NavigationMenu = () => {
           <Link to="/fsminput">Fsm Input</Link>
         </li>
         <li>
-          <Link to="fsmexample-granular">Fsm Example Granular Allen</Link>
+          <Link to="/fsmexample-granular">Fsm Example Granular Allen</Link>
+        </li>
+        <li>
+          <Link to="/fsm-superpose">Fsm Superpose</Link>
         </li>
       </ul>
     </nav>
