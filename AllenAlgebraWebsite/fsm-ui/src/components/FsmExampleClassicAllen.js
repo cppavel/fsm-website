@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import Fsm from "../logic/src/fsm";
 import State from "../logic/src/state";
+import generateProbability from "../logic/src/allenRelationSimulator";
 import FsmView from "./FsmView";
 import SimulationResults from "./SimulationResults";
 import NavigationMenu from "./NavigationMenu";
 import Plot from "react-plotly.js";
 
 const FsmExampleClassicAllen = () => {
+  const maxIterations = 4096;
+
   const [livingProbability, setLivingProbability] = useState(0.6);
   const [dyingProbability, setDyingProbability] = useState(0.3);
   const [superposedFsm, setSuperposedFsm] = useState(null);
@@ -17,7 +20,28 @@ const FsmExampleClassicAllen = () => {
   const [heatmapData, setHeatmapData] = useState(null);
   const [heatmapX, setHeatmapX] = useState([]);
   const [heatmapY, setHeatmapY] = useState([]);
-  const [showHeatmap, setShowHeatmap] = useState(false); // State to toggle heatmap
+  const [showHeatmap, setShowHeatmap] = useState(false);
+  const [selectedRelation, setSelectedRelation] = useState("during");
+
+  const allenRelations = [
+    "is preceded",
+    "precedes",
+    "meets inverse",
+    "meets",
+    "overlaps inverse",
+    "overlaps",
+    "starts inverse",
+    "starts",
+    "during",
+    "during inverse",
+    "finishes",
+    "finishes inverse",
+    "equals",
+  ];
+
+  const handleRelationChange = (event) => {
+    setSelectedRelation(event.target.value);
+  };
 
   const handleLivingProbabilityChange = (event) => {
     let newValue = parseFloat(event.target.value);
@@ -56,12 +80,26 @@ const FsmExampleClassicAllen = () => {
   const generateHeatmapData = () => {
     const data = [];
     const axisSteps = [];
-    for (let livingProb = 0; livingProb <= 1; livingProb += heatmapStep) {
+    for (
+      let livingProb = heatmapStep;
+      livingProb <= 1;
+      livingProb += heatmapStep
+    ) {
       const row = [];
       axisSteps.push(livingProb);
 
-      for (let dyingProb = 0; dyingProb <= 1; dyingProb += heatmapStep) {
-        const probability = livingProb * dyingProb; // change
+      for (
+        let dyingProb = heatmapStep;
+        dyingProb <= 1;
+        dyingProb += heatmapStep
+      ) {
+        const probability = generateProbability(
+          maxIterations,
+          livingProb,
+          dyingProb,
+          selectedRelation
+        );
+
         row.push(probability);
       }
       data.push(row);
@@ -70,7 +108,7 @@ const FsmExampleClassicAllen = () => {
     setHeatmapX(axisSteps);
     setHeatmapY(axisSteps);
     setHeatmapData(data);
-    setShowHeatmap(true); // Show heatmap
+    setShowHeatmap(true);
     setUpdateKey((x) => x + 1);
   };
 
@@ -143,10 +181,33 @@ const FsmExampleClassicAllen = () => {
               borderRadius: "5px",
               border: "none",
               marginBottom: "10px",
+              marginTop: "10px",
             }}
           >
             Generate Heatmap
           </button>
+          <select
+            value={selectedRelation}
+            onChange={handleRelationChange}
+            style={{
+              padding: "8px",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
+              backgroundColor: "#fff",
+              color: "#333",
+              fontSize: "16px",
+              cursor: "pointer",
+              outline: "none",
+              marginLeft: "10px",
+              marginTop: "10px",
+            }}
+          >
+            {allenRelations.map((relation) => (
+              <option key={relation} value={relation}>
+                {relation}
+              </option>
+            ))}
+          </select>
           <br />
           <label htmlFor="probabilityStep">Heat map step:</label>
           <input
@@ -162,7 +223,7 @@ const FsmExampleClassicAllen = () => {
               marginBottom: "10px",
             }}
           />
-          <br />
+          <hr />
           <button
             onClick={regenerateFsm}
             style={{
@@ -233,12 +294,26 @@ const FsmExampleClassicAllen = () => {
           )}
         </div>
         <div
-          style={{ flex: "1 1 80%", width: "80%", backgroundColor: "#e0e0e0" }}
+          style={
+            showHeatmap
+              ? {
+                  flex: "1 1 80%",
+                  width: "80%",
+                  backgroundColor: "#e0e0e0",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }
+              : {
+                  flex: "1 1 80%",
+                  width: "80%",
+                  backgroundColor: "#e0e0e0",
+                }
+          }
         >
           {showHeatmap
             ? heatmapData && (
                 <Plot
-                  style={{ margin: "auto" }}
                   key={updateKey}
                   data={[
                     {
@@ -252,14 +327,16 @@ const FsmExampleClassicAllen = () => {
                   layout={{
                     width: 800,
                     height: 600,
-                    title: "Probability Heatmap",
+                    title: `Probability Heatmap - ${selectedRelation}`,
                     xaxis: {
                       autorange: false,
                       range: [0, 1],
+                      title: "Probability of dying",
                     },
                     yaxis: {
                       autorange: false,
                       range: [0, 1],
+                      title: "Probability of living",
                     },
                   }}
                 />
