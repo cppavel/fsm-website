@@ -1,17 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
 import FsmExampleClassicAllen from "./components/FsmExampleClassicAllen";
 import FsmInput from "./components/FsmInput";
 import FsmExampleGranularAllen from "./components/FsmExampleGranularAllen";
 import FsmSuperpose from "./components/FsmSuperpose";
+import FsmSimulator from "./components/FsmSimulator";
 
 const App = () => {
   return (
     <Router basename="/fsm-website">
       <div>
         <Routes>
-          <Route path="/" exact element={<Home />} />
+          <Route path="/" exact element={<FsmExampleClassicAllen />} />
           <Route
             path="/fsmexample-allen"
             element={<FsmExampleClassicAllen />}
@@ -22,6 +22,7 @@ const App = () => {
             element={<FsmExampleGranularAllen />}
           />
           <Route path="/fsm-superpose" element={<FsmSuperpose />} />
+          <Route path="/fsm-simulate" element={<FsmSimulator />} />
         </Routes>
       </div>
     </Router>

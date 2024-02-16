@@ -440,7 +440,6 @@ class Fsm {
     const [nodes, edges] = this.generateConnectionsForReactFlow();
 
     const longestPaths = this.findLongestPaths();
-    console.log(longestPaths.entries());
     const countAtSameXCoordinate = new DeepDict();
 
     for (const node of nodes) {

@@ -3,6 +3,7 @@ import Fsm from "../logic/src/fsm";
 import State from "../logic/src/state";
 import FsmView from "./FsmView";
 import SimulationResults from "./SimulationResults";
+import NavigationMenu from "./NavigationMenu";
 
 const FsmExampleGranularAllen = () => {
   const [pStart, setPStart] = useState(0.25);
@@ -124,29 +125,16 @@ const FsmExampleGranularAllen = () => {
   };
 
   return (
-    <div style={{ display: "flex", height: "100%" }}>
-      <div
-        style={{ flex: "1 1 20%", width: "20%", backgroundColor: "#f0f0f0" }}
-      >
-        <button
-          onClick={regenerateFsm}
-          style={{
-            backgroundColor: "#4CAF50",
-            color: "white",
-            padding: "10px",
-            borderRadius: "5px",
-            border: "none",
-            marginRight: "10px",
-            marginBottom: "10px",
-          }}
+    <div>
+      <NavigationMenu />
+      <div style={{ display: "flex", height: "100%" }}>
+        <div
+          style={{ flex: "1 1 20%", width: "20%", backgroundColor: "#f0f0f0" }}
         >
-          Generate FSM
-        </button>
-        {superposedFsm && (
           <button
-            onClick={normalizeProbabilities}
+            onClick={regenerateFsm}
             style={{
-              backgroundColor: "#2196F3",
+              backgroundColor: "#4CAF50",
               color: "white",
               padding: "10px",
               borderRadius: "5px",
@@ -155,95 +143,111 @@ const FsmExampleGranularAllen = () => {
               marginBottom: "10px",
             }}
           >
-            Normalize Probabilities
+            Generate FSM
           </button>
-        )}
-        <div>
-          <label htmlFor="pStart">p_start:</label>
-          <input
-            type="number"
-            id="pStart"
-            name="pStart"
-            value={pStart}
-            onChange={handlePStartChange}
-            style={{
-              padding: "10px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              marginBottom: "10px",
-              marginTop: "10px",
-            }}
-          />
+          {superposedFsm && (
+            <button
+              onClick={normalizeProbabilities}
+              style={{
+                backgroundColor: "#2196F3",
+                color: "white",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "none",
+                marginRight: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              Normalize Probabilities
+            </button>
+          )}
+          <div>
+            <label htmlFor="pStart">p_start:</label>
+            <input
+              type="number"
+              id="pStart"
+              name="pStart"
+              value={pStart}
+              onChange={handlePStartChange}
+              style={{
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                marginBottom: "10px",
+                marginTop: "10px",
+              }}
+            />
+          </div>
+          <div>
+            <label htmlFor="p">p:</label>
+            <input
+              type="number"
+              id="p"
+              name="p"
+              value={p}
+              onChange={handlePChange}
+              style={{
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                marginBottom: "10px",
+                marginTop: "10px",
+              }}
+            />
+          </div>
+          <div>
+            <label htmlFor="pPrime">p_prime:</label>
+            <input
+              type="number"
+              id="pPrime"
+              name="pPrime"
+              value={pPrime}
+              onChange={handlePPrimeChange}
+              style={{
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                marginBottom: "10px",
+                marginTop: "10px",
+              }}
+            />
+          </div>
+          <div>
+            <label htmlFor="alpha">alpha:</label>
+            <input
+              type="number"
+              id="alpha"
+              name="alpha"
+              value={alpha}
+              onChange={handleAlphaChange}
+              style={{
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                marginBottom: "10px",
+                marginTop: "10px",
+              }}
+            />
+          </div>
+          {superposedFsm && (
+            <SimulationResults
+              key={updateKey}
+              fsm={superposedFsm}
+              depad={depad}
+            />
+          )}
         </div>
-        <div>
-          <label htmlFor="p">p:</label>
-          <input
-            type="number"
-            id="p"
-            name="p"
-            value={p}
-            onChange={handlePChange}
-            style={{
-              padding: "10px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              marginBottom: "10px",
-              marginTop: "10px",
-            }}
-          />
+        <div
+          style={{ flex: "1 1 80%", width: "80%", backgroundColor: "#e0e0e0" }}
+        >
+          {reactFlowNodesAndEdges && (
+            <FsmView
+              key={updateKey}
+              nodes={reactFlowNodesAndEdges.nodes}
+              edges={reactFlowNodesAndEdges.edges}
+            />
+          )}
         </div>
-        <div>
-          <label htmlFor="pPrime">p_prime:</label>
-          <input
-            type="number"
-            id="pPrime"
-            name="pPrime"
-            value={pPrime}
-            onChange={handlePPrimeChange}
-            style={{
-              padding: "10px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              marginBottom: "10px",
-              marginTop: "10px",
-            }}
-          />
-        </div>
-        <div>
-          <label htmlFor="alpha">alpha:</label>
-          <input
-            type="number"
-            id="alpha"
-            name="alpha"
-            value={alpha}
-            onChange={handleAlphaChange}
-            style={{
-              padding: "10px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              marginBottom: "10px",
-              marginTop: "10px",
-            }}
-          />
-        </div>
-        {superposedFsm && (
-          <SimulationResults
-            key={updateKey}
-            fsm={superposedFsm}
-            depad={depad}
-          />
-        )}
-      </div>
-      <div
-        style={{ flex: "1 1 80%", width: "80%", backgroundColor: "#e0e0e0" }}
-      >
-        {reactFlowNodesAndEdges && (
-          <FsmView
-            key={updateKey}
-            nodes={reactFlowNodesAndEdges.nodes}
-            edges={reactFlowNodesAndEdges.edges}
-          />
-        )}
       </div>
     </div>
   );
