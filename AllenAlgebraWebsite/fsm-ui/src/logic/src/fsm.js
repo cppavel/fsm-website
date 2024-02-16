@@ -62,6 +62,12 @@ class Fsm {
       );
   }
 
+  normalizeProbabilities() {
+    for (const state of this.statesByLabel.values()) {
+      state.normalizeProbabilities();
+    }
+  }
+
   generateThisFsmTransitions(otherFsm, superposedFsm, currentStateLabel) {
     const thisFsmStateLabel = currentStateLabel[0];
     const otherFsmStateLabel = currentStateLabel[1];

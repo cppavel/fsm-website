@@ -7,6 +7,20 @@ class State {
     this.probabilities = new DeepDict();
   }
 
+  normalizeProbabilities() {
+    let sum = 0;
+    // eslint-disable-next-line no-unused-vars
+    for (let [_, probability] of this.probabilities.entries()) {
+      sum += probability;
+    }
+
+    if (sum > 0) {
+      for (let [symbol, probability] of this.probabilities.entries()) {
+        this.probabilities.set(symbol, probability / sum);
+      }
+    }
+  }
+
   addTransition(symbol, nextState, probability) {
     if (this.transitions.has(symbol)) {
       return;

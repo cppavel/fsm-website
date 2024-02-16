@@ -34,6 +34,18 @@ const FsmExampleClassicAllen = () => {
     setDyingProbability(newValue);
   };
 
+  const normalizeProbabilities = () => {
+    if (superposedFsm == null) {
+      return;
+    }
+
+    superposedFsm.normalizeProbabilities();
+    const newReactFlowNodesAndEdges =
+      superposedFsm.generateNodesAndEdgesForReactFlow(0, 0, 400, 250);
+    setReactFlowNodesAndEdges(newReactFlowNodesAndEdges);
+    setUpdateKey((x) => x + 1);
+  };
+
   const regenerateFsm = () => {
     const fsm1 = new Fsm();
     fsm1.addState(new State("u_a"));
@@ -81,6 +93,22 @@ const FsmExampleClassicAllen = () => {
         >
           Generate FSM
         </button>
+        {superposedFsm && (
+          <button
+            onClick={normalizeProbabilities}
+            style={{
+              backgroundColor: "#2196F3",
+              color: "white",
+              padding: "10px",
+              borderRadius: "5px",
+              border: "none",
+              marginRight: "10px",
+              marginBottom: "10px",
+            }}
+          >
+            Normalize Probabilities
+          </button>
+        )}
         <div>
           <label htmlFor="livingProbability">Living Probability:</label>
           <input

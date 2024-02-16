@@ -57,6 +57,18 @@ const FsmExampleGranularAllen = () => {
     setAlpha(newValue);
   };
 
+  const normalizeProbabilities = () => {
+    if (superposedFsm == null) {
+      return;
+    }
+
+    superposedFsm.normalizeProbabilities();
+    const newReactFlowNodesAndEdges =
+      superposedFsm.generateNodesAndEdgesForReactFlow(0, 0, 400, 250);
+    setReactFlowNodesAndEdges(newReactFlowNodesAndEdges);
+    setUpdateKey((x) => x + 1);
+  };
+
   const regenerateFsm = () => {
     const fsm1 = new Fsm();
     fsm1.addState(new State("u_a"));
@@ -84,7 +96,7 @@ const FsmExampleGranularAllen = () => {
 
     const newSuperposedFsm = fsm1.superpose(fsm2);
     const newReactFlowNodesAndEdges =
-      newSuperposedFsm.generateNodesAndEdgesForReactFlow(0, 0, 400, 250, 7);
+      newSuperposedFsm.generateNodesAndEdgesForReactFlow(0, 0, 400, 250);
 
     setSuperposedFsm(newSuperposedFsm);
     setReactFlowNodesAndEdges(newReactFlowNodesAndEdges);
@@ -120,6 +132,22 @@ const FsmExampleGranularAllen = () => {
         >
           Generate FSM
         </button>
+        {superposedFsm && (
+          <button
+            onClick={normalizeProbabilities}
+            style={{
+              backgroundColor: "#2196F3",
+              color: "white",
+              padding: "10px",
+              borderRadius: "5px",
+              border: "none",
+              marginRight: "10px",
+              marginBottom: "10px",
+            }}
+          >
+            Normalize Probabilities
+          </button>
+        )}
         <div>
           <label htmlFor="pStart">p_start:</label>
           <input
