@@ -2,7 +2,7 @@ const Fsm = require("../src/fsm");
 const State = require("../src/state");
 const reactFlow = require("reactflow");
 
-describe("generateNodesAndEdgesForReactFlow", () => {
+describe("generateNodesAndEdgesForReactFlowTopologicalSort", () => {
   let fsm1;
 
   beforeEach(() => {
@@ -20,12 +20,8 @@ describe("generateNodesAndEdgesForReactFlow", () => {
   });
 
   test("should return correct nodes and edges", () => {
-    const reactFlowNodesAndEdges = fsm1.generateNodesAndEdgesForReactFlow(
-      0,
-      0,
-      100,
-      50
-    );
+    const reactFlowNodesAndEdges =
+      fsm1.generateNodesAndEdgesForReactFlowTopologicalSort(0, 0, 200, 100);
 
     expect(reactFlowNodesAndEdges.nodes).toEqual([
       {

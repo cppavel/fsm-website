@@ -291,7 +291,30 @@ class Fsm {
       }
     }
 
-    return stack.reverse().map((x) => `${x}`);
+    return stack.reverse();
+  }
+
+  findLongestPaths() {
+    const topologicalSort = this.topologicalSort();
+    const distances = new DeepDict();
+
+    for (const stateLabel of this.statesByLabel.keys()) {
+      distances.set(`${stateLabel}`, 0);
+    }
+
+    for (const stateLabel of topologicalSort) {
+      // eslint-disable-next-line no-unused-vars
+      for (const [_, nextState] of this.statesByLabel
+        .get(stateLabel)
+        .transitions.entries()) {
+        const newDistance = distances.get(`${stateLabel}`) + 1;
+        if (newDistance > distances.get(`${nextState.label}`)) {
+          distances.set(`${nextState.label}`, newDistance);
+        }
+      }
+    }
+
+    return distances;
   }
 
   simulate() {
@@ -325,13 +348,7 @@ class Fsm {
     }
   }
 
-  generateNodesAndEdgesForReactFlow(
-    startNodeX,
-    startNodeY,
-    stepX,
-    stepY,
-    nodesPerHorizontalLayer = 3
-  ) {
+  generateConnectionsForReactFlow() {
     const nodes = [];
     const edges = [];
 
@@ -384,7 +401,19 @@ class Fsm {
       }
     }
 
-    const topologicalOrder = this.topologicalSort();
+    return [nodes, edges];
+  }
+
+  generateNodesAndEdgesForReactFlowTopologicalSort(
+    startNodeX,
+    startNodeY,
+    stepX,
+    stepY,
+    nodesPerHorizontalLayer = 3
+  ) {
+    const [nodes, edges] = this.generateConnectionsForReactFlow();
+
+    const topologicalOrder = this.topologicalSort().map((x) => `${x}`);
 
     for (const node of nodes) {
       const order = topologicalOrder.indexOf(node.id);
@@ -394,6 +423,40 @@ class Fsm {
         x: startNodeX + stepX * shiftX,
         y: startNodeY + stepY * shiftY,
       };
+    }
+
+    return {
+      nodes: nodes,
+      edges: edges,
+    };
+  }
+
+  generateNodesAndEdgesForReactFlowLongestPaths(
+    startNodeX,
+    startNodeY,
+    stepX,
+    stepY
+  ) {
+    const [nodes, edges] = this.generateConnectionsForReactFlow();
+
+    const longestPaths = this.findLongestPaths();
+    console.log(longestPaths.entries());
+    const countAtSameXCoordinate = new DeepDict();
+
+    for (const node of nodes) {
+      const distance = longestPaths.get(node.id);
+
+      if (!countAtSameXCoordinate.has(distance)) {
+        countAtSameXCoordinate.set(distance, 0);
+      }
+
+      const count = countAtSameXCoordinate.get(distance);
+      node.position = {
+        x: startNodeX + stepX * distance,
+        y: startNodeY + stepY * count,
+      };
+
+      countAtSameXCoordinate.set(distance, count + 1);
     }
 
     return {

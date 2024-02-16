@@ -20,7 +20,12 @@ const FsmLoader = () => {
     if (fsm1 && fsm2) {
       const superposed = fsm1.superpose(fsm2);
       const reactFlowNodesAndEdges =
-        superposed.generateNodesAndEdgesForReactFlow(0, 0, 250, 250);
+        superposed.generateNodesAndEdgesForReactFlowLongestPaths(
+          0,
+          0,
+          250,
+          250
+        );
       setSuperposedNodes(reactFlowNodesAndEdges.nodes);
       setSuperposedEdges(reactFlowNodesAndEdges.edges);
       setSuperposedFsm(superposed);
@@ -50,7 +55,12 @@ const FsmLoader = () => {
       try {
         const parsedFsm = FsmSerializer.deserialize(content);
         const reactFlowNodesAndEdges =
-          parsedFsm.generateNodesAndEdgesForReactFlow(0, 0, 250, 250);
+          parsedFsm.generateNodesAndEdgesForReactFlowLongestPaths(
+            0,
+            0,
+            250,
+            250
+          );
         setNodes(reactFlowNodesAndEdges.nodes);
         setEdges(reactFlowNodesAndEdges.edges);
         setFsm(parsedFsm);

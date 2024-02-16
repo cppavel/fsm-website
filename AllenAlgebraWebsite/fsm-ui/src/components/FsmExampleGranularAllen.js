@@ -64,7 +64,12 @@ const FsmExampleGranularAllen = () => {
 
     superposedFsm.normalizeProbabilities();
     const newReactFlowNodesAndEdges =
-      superposedFsm.generateNodesAndEdgesForReactFlow(0, 0, 400, 250);
+      superposedFsm.generateNodesAndEdgesForReactFlowLongestPaths(
+        0,
+        0,
+        400,
+        250
+      );
     setReactFlowNodesAndEdges(newReactFlowNodesAndEdges);
     setUpdateKey((x) => x + 1);
   };
@@ -96,7 +101,12 @@ const FsmExampleGranularAllen = () => {
 
     const newSuperposedFsm = fsm1.superpose(fsm2);
     const newReactFlowNodesAndEdges =
-      newSuperposedFsm.generateNodesAndEdgesForReactFlow(0, 0, 400, 250);
+      newSuperposedFsm.generateNodesAndEdgesForReactFlowLongestPaths(
+        0,
+        0,
+        400,
+        250
+      );
 
     setSuperposedFsm(newSuperposedFsm);
     setReactFlowNodesAndEdges(newReactFlowNodesAndEdges);

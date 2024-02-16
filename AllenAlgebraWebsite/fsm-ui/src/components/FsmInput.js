@@ -51,12 +51,8 @@ const FsmInput = () => {
 
   const createFsmOnClick = () => {
     const fsm = createFsm();
-    const reactFlowNodesAndEdges = fsm.generateNodesAndEdgesForReactFlow(
-      0,
-      0,
-      250,
-      250
-    );
+    const reactFlowNodesAndEdges =
+      fsm.generateNodesAndEdgesForReactFlowLongestPaths(0, 0, 250, 250);
 
     setNodes(reactFlowNodesAndEdges.nodes);
     setEdges(reactFlowNodesAndEdges.edges);
