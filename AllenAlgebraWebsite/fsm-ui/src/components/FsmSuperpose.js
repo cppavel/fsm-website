@@ -16,6 +16,8 @@ const FsmLoader = () => {
   const [superposedNodes, setSuperposedNodes] = useState([]);
   const [superposedEdges, setSuperposedEdges] = useState([]);
 
+  const [updateKey, setUpdateKey] = useState(0);
+
   const handleSuperpose = () => {
     if (fsm1 && fsm2) {
       const superposed = fsm1.superpose(fsm2);
@@ -44,6 +46,24 @@ const FsmLoader = () => {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  };
+
+  const normalizeProbabilities = () => {
+    if (superposedFsm == null) {
+      return;
+    }
+
+    superposedFsm.normalizeProbabilities();
+    const newReactFlowNodesAndEdgesSuperposed =
+      superposedFsm.generateNodesAndEdgesForReactFlowLongestPaths(
+        0,
+        0,
+        400,
+        250
+      );
+    setSuperposedNodes(newReactFlowNodesAndEdgesSuperposed.nodes);
+    setSuperposedEdges(newReactFlowNodesAndEdgesSuperposed.edges);
+    setUpdateKey((x) => x + 1);
   };
 
   const handleFileChange = (event, setFsm, setNodes, setEdges) => {
@@ -152,6 +172,23 @@ const FsmLoader = () => {
         </button>
       )}
 
+      {superposedView && (
+        <button
+          onClick={normalizeProbabilities}
+          style={{
+            marginTop: "10px",
+            marginBottom: "10px",
+            padding: "5px 10px",
+            borderRadius: "5px",
+            border: "1px solid #007bff",
+            backgroundColor: "#007bff",
+            color: "white",
+          }}
+        >
+          Normalize Probabilities
+        </button>
+      )}
+
       <div style={styles.visualizationSection}>
         {!superposedView && (
           <div style={styles.visualizationContainer}>
@@ -169,7 +206,11 @@ const FsmLoader = () => {
           <div style={styles.visualizationContainer}>
             <h3>Superposed FSM Visualization</h3>
             {superposedFsm && (
-              <FsmView nodes={superposedNodes} edges={superposedEdges} />
+              <FsmView
+                key={updateKey}
+                nodes={superposedNodes}
+                edges={superposedEdges}
+              />
             )}
           </div>
         )}
