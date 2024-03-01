@@ -71,20 +71,22 @@ const SimulationResults = ({ fsm, depad }) => {
       </button>
       <br />
 
-      <input
-        type="number"
-        value={numberOfRuns}
-        onChange={handleNumberOfRunsChange}
-        style={{
-          padding: "10px",
-          borderRadius: "5px",
-          border: "1px solid #ccc",
-          marginBottom: "10px",
-          marginTop: "10px",
-        }}
-      />
-
-      <br />
+      <div>
+        <label htmlFor="numberOfRuns">Iterations:</label>
+        <input
+          id="numberOfRuns"
+          type="number"
+          value={numberOfRuns}
+          onChange={handleNumberOfRunsChange}
+          style={{
+            padding: "10px",
+            borderRadius: "5px",
+            border: "1px solid #ccc",
+            marginBottom: "10px",
+            marginTop: "10px",
+          }}
+        />
+      </div>
 
       <button
         onClick={() => setSimulations([])}

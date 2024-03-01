@@ -452,7 +452,7 @@ class Fsm {
       const count = countAtSameXCoordinate.get(distance);
       node.position = {
         x: startNodeX + stepX * distance,
-        y: startNodeY + stepY * count,
+        y: startNodeY + stepY * count + (stepY / 4) * distance,
       };
 
       countAtSameXCoordinate.set(distance, count + 1);

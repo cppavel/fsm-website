@@ -8,8 +8,6 @@ import NavigationMenu from "./NavigationMenu";
 import Plot from "react-plotly.js";
 
 const FsmExampleClassicAllen = () => {
-  const maxIterations = 4096;
-
   const [livingProbability, setLivingProbability] = useState(0.6);
   const [dyingProbability, setDyingProbability] = useState(0.3);
   const [superposedFsm, setSuperposedFsm] = useState(null);
@@ -22,6 +20,7 @@ const FsmExampleClassicAllen = () => {
   const [heatmapY, setHeatmapY] = useState([]);
   const [showHeatmap, setShowHeatmap] = useState(false);
   const [selectedRelation, setSelectedRelation] = useState("during");
+  const [maxIterations, setMaxIterations] = useState(1000);
 
   const allenRelations = [
     "is preceded",
@@ -163,6 +162,21 @@ const FsmExampleClassicAllen = () => {
     setShowHeatmap(false); // Hide heatmap when generating FSM
   };
 
+  const handleMaxIterationsChange = (event) => {
+    let newValue = null;
+    try {
+      newValue = parseInt(event.target.value);
+    } catch (e) {
+      newValue = 0;
+    }
+
+    if (newValue < 0) {
+      newValue = 0;
+    }
+
+    setMaxIterations(newValue);
+  };
+
   return (
     <div>
       <NavigationMenu />
@@ -208,6 +222,24 @@ const FsmExampleClassicAllen = () => {
               </option>
             ))}
           </select>
+          <div>
+            <label htmlFor="numberOfIterations">Iterations:</label>
+            <input
+              type="number"
+              id="numberOfIterations"
+              name="numberOfIterations"
+              value={maxIterations}
+              onChange={handleMaxIterationsChange}
+              style={{
+                padding: "10px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                marginBottom: "10px",
+                marginTop: "10px",
+                marginLeft: "10px",
+              }}
+            />
+          </div>
           <br />
           <label htmlFor="probabilityStep">Heat map step:</label>
           <input
@@ -221,6 +253,7 @@ const FsmExampleClassicAllen = () => {
               borderRadius: "5px",
               border: "1px solid #ccc",
               marginBottom: "10px",
+              marginLeft: "10px",
             }}
           />
           <hr />
@@ -266,6 +299,7 @@ const FsmExampleClassicAllen = () => {
                 borderRadius: "5px",
                 border: "1px solid #ccc",
                 marginBottom: "10px",
+                marginLeft: "10px",
               }}
             />
           </div>
@@ -282,6 +316,7 @@ const FsmExampleClassicAllen = () => {
                 borderRadius: "5px",
                 border: "1px solid #ccc",
                 marginBottom: "10px",
+                marginLeft: "10px",
               }}
             />
           </div>
