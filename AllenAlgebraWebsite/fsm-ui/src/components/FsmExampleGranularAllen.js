@@ -144,7 +144,9 @@ const FsmExampleGranularAllen = () => {
 
     setSuperposedFsm(newSuperposedFsm);
     setReactFlowNodesAndEdges(newReactFlowNodesAndEdges);
+    setFixedParameterMap({});
     setUpdateKey((x) => x + 1);
+    setShowHeatmap(false); // Hide heatmap when generating FSM
   };
 
   const depad = (path) => {
@@ -262,6 +264,7 @@ const FsmExampleGranularAllen = () => {
     setHeatmapData(data);
     setShowHeatmap(true);
     setUpdateKey((x) => x + 1);
+    setSuperposedFsm(null);
   };
 
   const handleMaxIterationsChange = (event) => {
@@ -379,6 +382,7 @@ const FsmExampleGranularAllen = () => {
               value={fixedParameterValue}
               onChange={handleFixedParameterValueChange}
               style={{
+                width: "33%",
                 padding: "10px",
                 borderRadius: "5px",
                 border: "1px solid #ccc",
@@ -391,7 +395,7 @@ const FsmExampleGranularAllen = () => {
 
           <p>Fixed parameters:</p>
 
-          <ul key={updateKey}>
+          <ul>
             {fixedParameterMap &&
               Object.keys(fixedParameterMap).map((key) => (
                 <li key={key}>

@@ -108,6 +108,7 @@ const FsmExampleClassicAllen = () => {
     setHeatmapY(axisSteps);
     setHeatmapData(data);
     setShowHeatmap(true);
+    setSuperposedFsm(null);
     setUpdateKey((x) => x + 1);
   };
 
