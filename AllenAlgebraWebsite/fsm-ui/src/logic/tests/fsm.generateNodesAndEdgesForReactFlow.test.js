@@ -37,14 +37,14 @@ describe("generateNodesAndEdgesForReactFlowTopologicalSort", () => {
       {
         id: "C",
         data: { label: "C" },
-        position: { x: 0, y: 50 },
+        position: { x: 0, y: 100 },
         sourcePosition: "right",
         targetPosition: "left",
       },
       {
         id: "D",
         data: { label: "D" },
-        position: { x: 100, y: 0 },
+        position: { x: 200, y: 0 },
         sourcePosition: "right",
         targetPosition: "left",
         style: {
@@ -54,7 +54,7 @@ describe("generateNodesAndEdgesForReactFlowTopologicalSort", () => {
       {
         id: "B",
         data: { label: "B" },
-        position: { x: 0, y: 100 },
+        position: { x: 0, y: 200 },
         sourcePosition: "right",
         targetPosition: "left",
       },

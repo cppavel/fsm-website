@@ -463,6 +463,63 @@ class Fsm {
       edges: edges,
     };
   }
+
+  generateTransitionMatrix() {
+    const matrix = [];
+
+    const stateToIndexMapping = new DeepDict();
+    const indexToStateMapping = new DeepDict();
+    let index = 0;
+
+    for (const stateLabel of this.statesByLabel.keys()) {
+      stateToIndexMapping.set(stateLabel, index);
+      indexToStateMapping.set(index, stateLabel);
+      index += 1;
+    }
+
+    for (const stateLabel of this.statesByLabel.keys()) {
+      const row = new Array(this.statesByLabel.size()).fill(0);
+      const currentState = this.statesByLabel.get(stateLabel);
+
+      for (const [symbol, nextState] of currentState.transitions.entries()) {
+        const nextStateIndex = stateToIndexMapping.get(nextState.label);
+        row[nextStateIndex] = currentState.probabilities.get(symbol);
+      }
+
+      matrix.push(row);
+    }
+
+    const initialDistribution = new Array(this.statesByLabel.size()).fill(0);
+
+    for (const stateLabel of this.startStateLabels.values()) {
+      const index = stateToIndexMapping.get(stateLabel);
+      initialDistribution[index] = 1;
+    }
+
+    for (const stateLabel of this.statesByLabel.keys()) {
+      let sumProbability = 0.0;
+      for (const probability of this.statesByLabel
+        .get(stateLabel)
+        .probabilities.values()) {
+        sumProbability += probability;
+      }
+
+      if (sumProbability < 1.0) {
+        const residual = 1.0 - sumProbability;
+
+        matrix[stateToIndexMapping.get(stateLabel)][
+          stateToIndexMapping.get(stateLabel)
+        ] = residual;
+      }
+    }
+
+    return {
+      matrix: matrix,
+      stateToIndexMapping: stateToIndexMapping,
+      indexToStateMapping: indexToStateMapping,
+      initialDistribution: initialDistribution,
+    };
+  }
 }
 
 module.exports = Fsm;

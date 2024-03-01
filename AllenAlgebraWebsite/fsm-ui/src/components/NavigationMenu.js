@@ -30,6 +30,11 @@ const NavigationMenu = () => {
             Fsm Simulate
           </Link>
         </li>
+        <li style={styles.li}>
+          <Link to="/fsm-matrix" style={styles.link}>
+            Fsm Matrix
+          </Link>
+        </li>
       </ul>
     </nav>
   );

@@ -5,6 +5,7 @@ import FsmInput from "./components/FsmInput";
 import FsmExampleGranularAllen from "./components/FsmExampleGranularAllen";
 import FsmSuperpose from "./components/FsmSuperpose";
 import FsmSimulator from "./components/FsmSimulator";
+import FsmMatrix from "./components/FsmMatrix";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           />
           <Route path="/fsm-superpose" element={<FsmSuperpose />} />
           <Route path="/fsm-simulate" element={<FsmSimulator />} />
+          <Route path="/fsm-matrix" element={<FsmMatrix />} />
         </Routes>
       </div>
     </Router>
