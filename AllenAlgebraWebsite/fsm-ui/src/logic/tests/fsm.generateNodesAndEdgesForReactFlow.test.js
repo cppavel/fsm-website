@@ -25,8 +25,8 @@ describe("generateNodesAndEdgesForReactFlowTopologicalSort", () => {
 
     expect(reactFlowNodesAndEdges.nodes).toEqual([
       {
-        id: "A",
-        data: { label: "A" },
+        id: '"A"',
+        data: { label: '"A"' },
         position: { x: 0, y: 0 },
         sourcePosition: "right",
         targetPosition: "left",
@@ -35,15 +35,15 @@ describe("generateNodesAndEdgesForReactFlowTopologicalSort", () => {
         },
       },
       {
-        id: "C",
-        data: { label: "C" },
+        id: '"C"',
+        data: { label: '"C"' },
         position: { x: 0, y: 100 },
         sourcePosition: "right",
         targetPosition: "left",
       },
       {
-        id: "D",
-        data: { label: "D" },
+        id: '"D"',
+        data: { label: '"D"' },
         position: { x: 200, y: 0 },
         sourcePosition: "right",
         targetPosition: "left",
@@ -52,8 +52,8 @@ describe("generateNodesAndEdgesForReactFlowTopologicalSort", () => {
         },
       },
       {
-        id: "B",
-        data: { label: "B" },
+        id: '"B"',
+        data: { label: '"B"' },
         position: { x: 0, y: 200 },
         sourcePosition: "right",
         targetPosition: "left",
@@ -62,37 +62,37 @@ describe("generateNodesAndEdgesForReactFlowTopologicalSort", () => {
 
     expect(reactFlowNodesAndEdges.edges).toEqual([
       {
-        id: "A-ab-B",
-        source: "A",
-        target: "B",
-        label: "ab P=0.600",
+        id: '"A"-["ab"]-"B"',
+        source: '"A"',
+        target: '"B"',
+        label: '["ab"] P=0.600',
         markerEnd: {
           type: reactFlow.MarkerType.ArrowClosed,
         },
       },
       {
-        id: "A-ac-C",
-        source: "A",
-        target: "C",
-        label: "ac P=1.000",
+        id: '"A"-["ac"]-"C"',
+        source: '"A"',
+        target: '"C"',
+        label: '["ac"] P=1.000',
         markerEnd: {
           type: reactFlow.MarkerType.ArrowClosed,
         },
       },
       {
-        id: "C-cd-D",
-        source: "C",
-        target: "D",
-        label: "cd P=1.000",
+        id: '"C"-["cd"]-"D"',
+        source: '"C"',
+        target: '"D"',
+        label: '["cd"] P=1.000',
         markerEnd: {
           type: reactFlow.MarkerType.ArrowClosed,
         },
       },
       {
-        id: "B-bd-D",
-        source: "B",
-        target: "D",
-        label: "bd P=0.300",
+        id: '"B"-["bd"]-"D"',
+        source: '"B"',
+        target: '"D"',
+        label: '["bd"] P=0.300',
         markerEnd: {
           type: reactFlow.MarkerType.ArrowClosed,
         },

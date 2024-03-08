@@ -22,6 +22,10 @@ const FsmExampleClassicAllen = () => {
   const [selectedRelation, setSelectedRelation] = useState("during");
   const [maxIterations, setMaxIterations] = useState(1000);
 
+  const [selectedStartState, setSelectedStartState] = useState("");
+  const [selectedEndState, setSelectedEndState] = useState("");
+  const [newProbability, setNewProbability] = useState(0.3);
+
   const allenRelations = [
     "is preceded",
     "precedes",
@@ -38,8 +42,18 @@ const FsmExampleClassicAllen = () => {
     "equals",
   ];
 
+  const overrideProbability = () => {};
+
   const handleRelationChange = (event) => {
     setSelectedRelation(event.target.value);
+  };
+
+  const handleStartStateChange = (event) => {
+    setSelectedStartState(event.target.value);
+  };
+
+  const handleEndStateChange = (event) => {
+    setSelectedEndState(event.target.value);
   };
 
   const handleLivingProbabilityChange = (event) => {
@@ -63,6 +77,18 @@ const FsmExampleClassicAllen = () => {
     }
 
     setDyingProbability(newValue);
+  };
+
+  const handleNewProbabilityChange = (event) => {
+    let newValue = parseFloat(event.target.value);
+
+    if (newValue < 0) {
+      newValue = 0;
+    } else if (newValue > 1) {
+      newValue = 1;
+    }
+
+    setNewProbability(newValue);
   };
 
   const handleHeatmapStepChange = (event) => {
@@ -281,6 +307,7 @@ const FsmExampleClassicAllen = () => {
                 borderRadius: "5px",
                 border: "none",
                 marginBottom: "10px",
+                marginLeft: "10px",
               }}
             >
               Normalize Probabilities
@@ -321,6 +348,106 @@ const FsmExampleClassicAllen = () => {
               }}
             />
           </div>
+          {superposedFsm && <hr />}
+          {superposedFsm && (
+            <label htmlFor="startStateSelector">Select start state:</label>
+          )}
+          {superposedFsm && (
+            <select
+              id="startStateSelector"
+              value={selectedStartState}
+              onChange={handleStartStateChange}
+              style={{
+                padding: "8px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                backgroundColor: "#fff",
+                color: "#333",
+                fontSize: "16px",
+                cursor: "pointer",
+                outline: "none",
+                marginLeft: "10px",
+                marginTop: "10px",
+              }}
+            >
+              {superposedFsm.statesByLabel.keys().map((stateLabel) => (
+                <option
+                  key={String(stateLabel)}
+                  value={JSON.stringify(stateLabel)}
+                >
+                  {JSON.stringify(stateLabel)}
+                </option>
+              ))}
+            </select>
+          )}
+          {superposedFsm && <br />}
+          {superposedFsm && (
+            <label htmlFor="endStateSelector">Select end state:</label>
+          )}
+          {superposedFsm && (
+            <select
+              id="endStateSelector"
+              value={selectedEndState}
+              onChange={handleEndStateChange}
+              style={{
+                padding: "8px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                backgroundColor: "#fff",
+                color: "#333",
+                fontSize: "16px",
+                cursor: "pointer",
+                outline: "none",
+                marginLeft: "10px",
+                marginTop: "10px",
+              }}
+            >
+              {superposedFsm.statesByLabel.keys().map((stateLabel) => (
+                <option
+                  key={String(stateLabel)}
+                  value={JSON.stringify(stateLabel)}
+                >
+                  {JSON.stringify(stateLabel)}
+                </option>
+              ))}
+            </select>
+          )}
+          {superposedFsm && (
+            <div>
+              <label htmlFor="newProbability">New Probability:</label>
+              <input
+                type="number"
+                id="newProbability"
+                name="newProbability"
+                value={newProbability}
+                onChange={handleNewProbabilityChange}
+                style={{
+                  padding: "10px",
+                  borderRadius: "5px",
+                  border: "1px solid #ccc",
+                  marginBottom: "10px",
+                  marginLeft: "10px",
+                  marginTop: "10px",
+                }}
+              />
+            </div>
+          )}
+          {superposedFsm && (
+            <button
+              onClick={overrideProbability}
+              style={{
+                backgroundColor: "#2196F3",
+                color: "white",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "none",
+                marginBottom: "10px",
+              }}
+            >
+              Override Probability
+            </button>
+          )}
+          <hr />
           {superposedFsm && (
             <SimulationResults
               key={updateKey}

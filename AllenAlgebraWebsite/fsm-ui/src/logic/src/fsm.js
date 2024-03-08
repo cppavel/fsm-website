@@ -299,7 +299,7 @@ class Fsm {
     const distances = new DeepDict();
 
     for (const stateLabel of this.statesByLabel.keys()) {
-      distances.set(`${stateLabel}`, 0);
+      distances.set(`${JSON.stringify(stateLabel)}`, 0);
     }
 
     for (const stateLabel of topologicalSort) {
@@ -307,9 +307,9 @@ class Fsm {
       for (const [_, nextState] of this.statesByLabel
         .get(stateLabel)
         .transitions.entries()) {
-        const newDistance = distances.get(`${stateLabel}`) + 1;
-        if (newDistance > distances.get(`${nextState.label}`)) {
-          distances.set(`${nextState.label}`, newDistance);
+        const newDistance = distances.get(`${JSON.stringify(stateLabel)}`) + 1;
+        if (newDistance > distances.get(`${JSON.stringify(nextState.label)}`)) {
+          distances.set(`${JSON.stringify(nextState.label)}`, newDistance);
         }
       }
     }
@@ -361,9 +361,9 @@ class Fsm {
       const currentState = this.statesByLabel.get(currentStateLabel);
 
       const node = {
-        id: `${currentStateLabel}`,
+        id: `${JSON.stringify(currentStateLabel)}`,
         data: {
-          label: `${currentStateLabel}`,
+          label: `${JSON.stringify(currentStateLabel)}`,
         },
         sourcePosition: "right",
         targetPosition: "left",
@@ -383,10 +383,12 @@ class Fsm {
 
       for (const [symbol, nextState] of currentState.transitions.entries()) {
         const edge = {
-          id: `${currentStateLabel}-${symbol}-${nextState.label}`,
-          source: `${currentStateLabel}`,
-          target: `${nextState.label}`,
-          label: `${symbol} P=${currentState.probabilities
+          id: `${JSON.stringify(currentStateLabel)}-${JSON.stringify(
+            symbol
+          )}-${JSON.stringify(nextState.label)}`,
+          source: `${JSON.stringify(currentStateLabel)}`,
+          target: `${JSON.stringify(nextState.label)}`,
+          label: `${JSON.stringify(symbol)} P=${currentState.probabilities
             .get(symbol)
             .toFixed(3)}`,
           markerEnd: {
@@ -413,7 +415,9 @@ class Fsm {
   ) {
     const [nodes, edges] = this.generateConnectionsForReactFlow();
 
-    const topologicalOrder = this.topologicalSort().map((x) => `${x}`);
+    const topologicalOrder = this.topologicalSort().map(
+      (x) => `${JSON.stringify(x)}`
+    );
 
     for (const node of nodes) {
       const order = topologicalOrder.indexOf(node.id);
@@ -440,6 +444,7 @@ class Fsm {
     const [nodes, edges] = this.generateConnectionsForReactFlow();
 
     const longestPaths = this.findLongestPaths();
+
     const countAtSameXCoordinate = new DeepDict();
 
     for (const node of nodes) {

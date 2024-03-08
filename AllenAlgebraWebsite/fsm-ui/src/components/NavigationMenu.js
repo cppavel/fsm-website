@@ -11,13 +11,13 @@ const NavigationMenu = () => {
           </Link>
         </li>
         <li style={styles.li}>
-          <Link to="/fsminput" style={styles.link}>
-            Fsm Input
+          <Link to="/fsmexample-granular" style={styles.link}>
+            Fsm Example Granular Allen
           </Link>
         </li>
         <li style={styles.li}>
-          <Link to="/fsmexample-granular" style={styles.link}>
-            Fsm Example Granular Allen
+          <Link to="/fsminput" style={styles.link}>
+            Fsm Input
           </Link>
         </li>
         <li style={styles.li}>

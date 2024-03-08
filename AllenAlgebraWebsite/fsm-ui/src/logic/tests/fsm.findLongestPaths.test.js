@@ -15,9 +15,9 @@ describe("FSM", () => {
       const longestPaths = fsm.findLongestPaths();
 
       expect(longestPaths.entries()).toEqual([
-        ["a", 0],
-        ["b", 1],
-        ["c", 2],
+        ['"a"', 0],
+        ['"b"', 1],
+        ['"c"', 2],
       ]);
     });
 

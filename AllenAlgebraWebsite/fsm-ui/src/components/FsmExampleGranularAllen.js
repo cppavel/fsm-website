@@ -540,6 +540,7 @@ const FsmExampleGranularAllen = () => {
               }}
             />
           </div>
+          <hr />
           {superposedFsm && (
             <SimulationResults
               key={updateKey}
