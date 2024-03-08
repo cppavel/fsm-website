@@ -23,8 +23,8 @@ const FsmExampleClassicAllen = () => {
   const [maxIterations, setMaxIterations] = useState(1000);
 
   const [selectedStartState, setSelectedStartState] = useState("");
-  const [selectedEndState, setSelectedEndState] = useState("");
-  const [newProbability, setNewProbability] = useState(0.3);
+  const [selectedSymbol, setSelectedSymbol] = useState("");
+  const [newProbability, setNewProbability] = useState(0.0);
 
   const allenRelations = [
     "is preceded",
@@ -42,7 +42,24 @@ const FsmExampleClassicAllen = () => {
     "equals",
   ];
 
-  const overrideProbability = () => {};
+  const overrideProbability = () => {
+    superposedFsm.overrideProbability(
+      JSON.parse(selectedStartState),
+      JSON.parse(selectedSymbol),
+      newProbability
+    );
+
+    const newReactFlowNodesAndEdges =
+      superposedFsm.generateNodesAndEdgesForReactFlowLongestPaths(
+        0,
+        0,
+        400,
+        250
+      );
+    setReactFlowNodesAndEdges(newReactFlowNodesAndEdges);
+
+    setUpdateKey((x) => x + 1);
+  };
 
   const handleRelationChange = (event) => {
     setSelectedRelation(event.target.value);
@@ -52,8 +69,8 @@ const FsmExampleClassicAllen = () => {
     setSelectedStartState(event.target.value);
   };
 
-  const handleEndStateChange = (event) => {
-    setSelectedEndState(event.target.value);
+  const handleSelectedSymbolChange = (event) => {
+    setSelectedSymbol(event.target.value);
   };
 
   const handleLivingProbabilityChange = (event) => {
@@ -202,6 +219,26 @@ const FsmExampleClassicAllen = () => {
     }
 
     setMaxIterations(newValue);
+  };
+
+  const getSymbols = () => {
+    if (superposedFsm == null) {
+      return [];
+    }
+
+    if (selectedStartState == null || selectedStartState === "") {
+      return [];
+    }
+
+    const state = superposedFsm.statesByLabel.get(
+      JSON.parse(selectedStartState)
+    );
+
+    if (state == null) {
+      return [];
+    }
+
+    return state.transitions.keys();
   };
 
   return (
@@ -382,13 +419,13 @@ const FsmExampleClassicAllen = () => {
           )}
           {superposedFsm && <br />}
           {superposedFsm && (
-            <label htmlFor="endStateSelector">Select end state:</label>
+            <label htmlFor="selectedSymbolSelector">Select symbol:</label>
           )}
           {superposedFsm && (
             <select
-              id="endStateSelector"
-              value={selectedEndState}
-              onChange={handleEndStateChange}
+              id="selectedSymbolSelector"
+              value={selectedSymbol}
+              onChange={handleSelectedSymbolChange}
               style={{
                 padding: "8px",
                 borderRadius: "5px",
@@ -402,12 +439,9 @@ const FsmExampleClassicAllen = () => {
                 marginTop: "10px",
               }}
             >
-              {superposedFsm.statesByLabel.keys().map((stateLabel) => (
-                <option
-                  key={String(stateLabel)}
-                  value={JSON.stringify(stateLabel)}
-                >
-                  {JSON.stringify(stateLabel)}
+              {getSymbols().map((symbol) => (
+                <option key={String(symbol)} value={JSON.stringify(symbol)}>
+                  {JSON.stringify(symbol)}
                 </option>
               ))}
             </select>

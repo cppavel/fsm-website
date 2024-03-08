@@ -525,6 +525,12 @@ class Fsm {
       initialDistribution: initialDistribution,
     };
   }
+
+  overrideProbability(stateLabel, symbol, probability) {
+    const state = this.statesByLabel.get(stateLabel);
+    state.probabilities.set(symbol, probability);
+    console.log(state);
+  }
 }
 
 module.exports = Fsm;
