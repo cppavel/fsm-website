@@ -29,6 +29,10 @@ const FsmExampleGranularAllen = () => {
   const [xAxisLabel, setXAxisLabel] = useState(null);
   const [maxIterations, setMaxIterations] = useState(1000);
 
+  const [selectedStartState, setSelectedStartState] = useState("");
+  const [selectedSymbol, setSelectedSymbol] = useState("");
+  const [newProbability, setNewProbability] = useState(0.0);
+
   const allenRelations = [
     "is preceded",
     "precedes",
@@ -46,6 +50,26 @@ const FsmExampleGranularAllen = () => {
   ];
 
   const parameters = ["p", "pPrime", "alpha", "pStart"];
+
+  const overrideProbability = () => {
+    superposedFsm.overrideProbability(
+      JSON.parse(selectedStartState),
+      JSON.parse(selectedSymbol),
+      newProbability
+    );
+
+    const newReactFlowNodesAndEdges =
+      superposedFsm.generateNodesAndEdgesForReactFlowLongestPaths(
+        0,
+        0,
+        400,
+        250
+      );
+
+    setReactFlowNodesAndEdges(newReactFlowNodesAndEdges);
+
+    setUpdateKey((x) => x + 1);
+  };
 
   const handlePStartChange = (event) => {
     let newValue = parseFloat(event.target.value);
@@ -89,6 +113,46 @@ const FsmExampleGranularAllen = () => {
     }
 
     setAlpha(newValue);
+  };
+
+  const handleStartStateChange = (event) => {
+    setSelectedStartState(event.target.value);
+  };
+
+  const handleSelectedSymbolChange = (event) => {
+    setSelectedSymbol(event.target.value);
+  };
+
+  const getSymbols = () => {
+    if (superposedFsm == null) {
+      return [];
+    }
+
+    if (selectedStartState == null || selectedStartState === "") {
+      return [];
+    }
+
+    const state = superposedFsm.statesByLabel.get(
+      JSON.parse(selectedStartState)
+    );
+
+    if (state == null) {
+      return [];
+    }
+
+    return state.transitions.keys();
+  };
+
+  const handleNewProbabilityChange = (event) => {
+    let newValue = parseFloat(event.target.value);
+
+    if (newValue < 0) {
+      newValue = 0;
+    } else if (newValue > 1) {
+      newValue = 1;
+    }
+
+    setNewProbability(newValue);
   };
 
   const normalizeProbabilities = () => {
@@ -540,6 +604,102 @@ const FsmExampleGranularAllen = () => {
               }}
             />
           </div>
+          {superposedFsm && <hr />}
+          {superposedFsm && (
+            <label htmlFor="startStateSelector">Select start state:</label>
+          )}
+          {superposedFsm && (
+            <select
+              id="startStateSelector"
+              value={selectedStartState}
+              onChange={handleStartStateChange}
+              style={{
+                padding: "8px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                backgroundColor: "#fff",
+                color: "#333",
+                fontSize: "16px",
+                cursor: "pointer",
+                outline: "none",
+                marginLeft: "10px",
+                marginTop: "10px",
+              }}
+            >
+              {superposedFsm.statesByLabel.keys().map((stateLabel) => (
+                <option
+                  key={String(stateLabel)}
+                  value={JSON.stringify(stateLabel)}
+                >
+                  {JSON.stringify(stateLabel)}
+                </option>
+              ))}
+            </select>
+          )}
+          {superposedFsm && <br />}
+          {superposedFsm && (
+            <label htmlFor="selectedSymbolSelector">Select symbol:</label>
+          )}
+          {superposedFsm && (
+            <select
+              id="selectedSymbolSelector"
+              value={selectedSymbol}
+              onChange={handleSelectedSymbolChange}
+              style={{
+                padding: "8px",
+                borderRadius: "5px",
+                border: "1px solid #ccc",
+                backgroundColor: "#fff",
+                color: "#333",
+                fontSize: "16px",
+                cursor: "pointer",
+                outline: "none",
+                marginLeft: "10px",
+                marginTop: "10px",
+              }}
+            >
+              {getSymbols().map((symbol) => (
+                <option key={String(symbol)} value={JSON.stringify(symbol)}>
+                  {JSON.stringify(symbol)}
+                </option>
+              ))}
+            </select>
+          )}
+          {superposedFsm && (
+            <div>
+              <label htmlFor="newProbability">New Probability:</label>
+              <input
+                type="number"
+                id="newProbability"
+                name="newProbability"
+                value={newProbability}
+                onChange={handleNewProbabilityChange}
+                style={{
+                  padding: "10px",
+                  borderRadius: "5px",
+                  border: "1px solid #ccc",
+                  marginBottom: "10px",
+                  marginLeft: "10px",
+                  marginTop: "10px",
+                }}
+              />
+            </div>
+          )}
+          {superposedFsm && (
+            <button
+              onClick={overrideProbability}
+              style={{
+                backgroundColor: "#2196F3",
+                color: "white",
+                padding: "10px",
+                borderRadius: "5px",
+                border: "none",
+                marginBottom: "10px",
+              }}
+            >
+              Override Probability
+            </button>
+          )}
           <hr />
           {superposedFsm && (
             <SimulationResults
