@@ -1,4 +1,4 @@
-const { State } = require("../src/state");
+const State = require("../src/state.js");
 
 describe("State", () => {
   describe("normalizeProbabilities", () => {
@@ -18,7 +18,7 @@ describe("State", () => {
     test("should handle empty probabilities", () => {
       const state = new State("test");
       state.normalizeProbabilities();
-      expect(state.probabilities.size).toBe(0);
+      expect(state.probabilities.size()).toBe(0);
     });
   });
 });
